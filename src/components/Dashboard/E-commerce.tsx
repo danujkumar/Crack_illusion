@@ -10,12 +10,29 @@ import CardDataStats2 from "../CardDataStats2";
 import CardDataStats3 from "../CardDataStats3";
 import CardDataStats4 from "../CardDataStats4";
 import CardDataStats5 from "../CardDataStats5";
+import Link from "next/link";
 // import MapOne from "../Maps/MapOne";
 import Page from "../osm/page";
 import DropdownMessage from "../Header/DropdownMessage";
 import DropdownUser from "../Header/DropdownUser";
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  Button,
+} from "@nextui-org/react";
+import DropdownDefault from "../Dropdowns/DropdownDefault";
 
 const ECommerce: React.FC = () => {
+  const [selectedKeys, setSelectedKeys] = React.useState(new Set(["Flight"]));
+
+  const selectedValue = React.useMemo(
+    () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
+    [selectedKeys],
+  );
+  console.log(selectedValue);
+
   return (
     <>
       <div className="">
@@ -24,7 +41,93 @@ const ECommerce: React.FC = () => {
             <Page />
           </div>
           <div>
-            <DropdownMessage />
+            <Dropdown>
+              <DropdownTrigger>
+                <Button
+                  variant="bordered"
+                  className="text-grey-300 w-[100%] text-xl font-normal capitalize "
+                >
+                  {selectedValue}
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                aria-label="Single selection example"
+                variant="flat"
+                disallowEmptySelection
+                selectionMode="single"
+                selectedKeys={selectedKeys}
+                onSelectionChange={(e) => {
+                  setSelectedKeys(e);
+                }}
+                // className="font-bold w-[100%]"
+                style={{ width: 300 }}
+              >
+                <DropdownItem key="number">Number</DropdownItem>
+                <DropdownItem key="date">Date</DropdownItem>
+                <DropdownItem key="single_date">Single Date</DropdownItem>
+                <DropdownItem key="iteration">Iteration</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+            {/* <DropdownUser /> */}
+
+            <Dropdown>
+              <DropdownTrigger>
+                <Button
+                  variant="bordered"
+                  className="text-grey-300 w-[100%] text-xl font-normal capitalize "
+                >
+                  {selectedValue}
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                aria-label="Single selection example"
+                variant="flat"
+                disallowEmptySelection
+                selectionMode="single"
+                selectedKeys={selectedKeys}
+                onSelectionChange={(e) => {
+                  setSelectedKeys(e);
+                }}
+                // className="font-bold w-[100%]"
+                style={{ width: 300 }}
+              >
+                <DropdownItem
+                  className="flex gap-4.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
+                  key="Aircraft 1234"
+                >
+                  <div className="flex h-12.5 w-12.5 items-center justify-center rounded-full bg-green-400">
+                    <h1 className="text-2xl text-black">1</h1>
+                  </div>
+                  <div className="w-50">
+                    <h6 className="text-sm font-medium  text-black dark:text-white">
+                      This path can be consider safe with Risk Index: 2
+                    </h6>
+                  </div>
+                </DropdownItem>
+                <DropdownItem key="number">
+                  <div className="flex h-12.5 w-12.5 items-center justify-center rounded-full bg-red">
+                    <h1 className="text-2xl text-black">2</h1>
+                  </div>
+                  <div className="w-50">
+                    <h6 className="text-sm font-medium  text-black dark:text-white">
+                      This path can be consider safe with Risk Index: 5
+                    </h6>
+                  </div>
+                </DropdownItem>
+                <DropdownItem key="date">
+                  <div className="flex h-12.5 w-12.5 items-center justify-center rounded-full bg-yellow-400">
+                    <h1 className="text-2xl text-black">3</h1>
+                  </div>
+                  <div className="w-50">
+                    <h6 className="text-sm font-medium  text-black dark:text-white">
+                      This path can be consider safe with Risk Index: 5
+                    </h6>
+                  </div>
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+            {/* <DropdownMessage /> */}
+            {/* <DropdownDefault/> */}
             {/* <DropdownUser/> */}
             <CardDataStats
               title="Total views"
@@ -70,7 +173,7 @@ const ECommerce: React.FC = () => {
         </div>
 
         <div className="mt-4 grid grid-cols-1 xl:grid-cols-2  2xl:mt-7.5 ">
-          <div className="grid grid-cols-1 w-md md:grid-cols-3 md:h-auto xl:grid-cols-3 h-[100vh] xl:h-auto">
+          <div className="w-md grid h-[100vh] grid-cols-1 md:h-auto md:grid-cols-3 xl:h-auto xl:grid-cols-3">
             <CardDataStats5
               title="Total Users"
               total="3.456"
@@ -150,7 +253,7 @@ const ECommerce: React.FC = () => {
           </div>
           {/* <ChartOne /> */}
           <div>
-          <ChartTwo />
+            <ChartTwo />
           </div>
           {/* <ChartThree /> */}
           {/* <MapOne /> */}
