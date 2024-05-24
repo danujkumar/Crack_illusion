@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import ChartOne from "../Charts/ChartOne";
 import ChartThree from "../Charts/ChartThree";
 import ChartTwo from "../Charts/ChartTwo";
@@ -14,8 +14,25 @@ import CardDataStats5 from "../CardDataStats5";
 import Page from "../osm/page";
 import DropdownMessage from "../Header/DropdownMessage";
 import DropdownUser from "../Header/DropdownUser";
+import axios from "axios";
 
 const ECommerce: React.FC = () => {
+  useEffect(() => {
+    console.log("Axios system");
+    axios
+      .post("http://localhost:3001/api/routes", {
+        dep_iato: "DEL",
+        arr_iato: "BOM",
+        shift: "Morning",
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log("Frontend error: ", err);
+      });
+  }, []);
+
   return (
     <>
       <div className="">
@@ -70,7 +87,7 @@ const ECommerce: React.FC = () => {
         </div>
 
         <div className="mt-4 grid grid-cols-1 xl:grid-cols-2  2xl:mt-7.5 ">
-          <div className="grid grid-cols-1 w-md md:grid-cols-3 md:h-auto xl:grid-cols-3 h-[100vh] xl:h-auto">
+          <div className="w-md grid h-[100vh] grid-cols-1 md:h-auto md:grid-cols-3 xl:h-auto xl:grid-cols-3">
             <CardDataStats5
               title="Total Users"
               total="3.456"
@@ -150,7 +167,7 @@ const ECommerce: React.FC = () => {
           </div>
           {/* <ChartOne /> */}
           <div>
-          <ChartTwo />
+            <ChartTwo />
           </div>
           {/* <ChartThree /> */}
           {/* <MapOne /> */}
