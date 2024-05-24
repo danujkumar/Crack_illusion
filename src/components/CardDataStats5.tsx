@@ -26,7 +26,7 @@ const CardDataStats5: React.FC<CardDataStatsProps> = ({
       <div className="mt-1 flex-col items-end justify-between">
         <h6 className="text-md font-bold text-black dark:text-white xl:text-xl">
           {/* {total} */}
-          Flight Health Metrics
+          Terrain Information
         </h6>
         <div className="mt-4 flex-row justify-between">
           <h6 className="mt-2 text-sm font-bold text-black dark:text-white">
