@@ -60,7 +60,7 @@ const DropdownMessage = () => {
         ref={dropdown}
         onFocus={() => setDropdownOpen(true)}
         onBlur={() => setDropdownOpen(false)}
-        className={`absolute mt-2.5 flex h-70 w-xl flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark sm:w-xl ${
+        className={`w-xl sm:w-xl absolute mt-2.5 flex h-70 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${
           dropdownOpen === true ? "block" : "hidden"
         }`}
       >
@@ -100,7 +100,7 @@ const DropdownMessage = () => {
             </Link>
           </li>
           <li>
-          <Link
+            <Link
               className="flex gap-4.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
               href="/#"
             >
