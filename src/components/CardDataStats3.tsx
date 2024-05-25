@@ -1,4 +1,6 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
+import { useAuth } from "@/utils/auth";
+import axios from "axios";
 
 interface CardDataStatsProps {
   title: string;
@@ -17,6 +19,35 @@ const CardDataStats3: React.FC<CardDataStatsProps> = ({
   levelDown,
   children,
 }) => {
+  const { location, situation } = useAuth();
+  const [weather, setWeather] = useState({
+    temp: "",
+    pressure: "",
+    visibility: "",
+    wind_speed: "",
+    wind_deg: "",
+    type: "",
+  });
+  useEffect(() => {
+    axios
+      .get(`https://api.openweathermap.org/data/3.0/onecall?lat=${location.lat}&lon=${location.lng}&appid=dd3508ba7eb1b2b5f26653a552363746`)
+      .then((res) => {
+        setWeather({
+          temp: res.data.current.temp,
+          pressure: res.data.current.pressure,
+          visibility: res.data.current.visibility,
+          wind_speed: res.data.current.wind_speed,
+          wind_deg: res.data.current.wind_deg,
+          type: res.data.current.weather[0].main,
+        });
+      })
+      .catch((err) => {
+        console.log("Weather api error: ", err);
+      }).finally(()=>{
+        situation(weather);
+      });
+  }, [location]);
+
   return (
     <div className="rounded-sm border border-stroke bg-white px-4 py-2 shadow-default dark:border-strokedark dark:bg-boxdark">
       {/* <div className="flex h-11.5 w-11.5 items-center justify-center rounded-full bg-meta-2 dark:bg-meta-4">
@@ -33,61 +64,22 @@ const CardDataStats3: React.FC<CardDataStatsProps> = ({
             Current Weather:{" "}
             <span className="text-sm font-medium">
               {/* {title} */}
-              Clear sky
+              {weather.type}
             </span>
           </h6>
           <h6 className="mt-2 text-sm font-bold text-black dark:text-white">
-            Temperature: <span className="text-sm font-medium">75°F</span>
+            Temperature: <span className="text-sm font-medium">{weather.temp} Kelvin</span>
           </h6>
           <h6 className="mt-2 text-sm font-bold text-black dark:text-white">
-            Wind Speed: <span className="text-sm font-medium">10 mph</span>
+            Wind Speed: <span className="text-sm font-medium">{weather.wind_speed} mph</span>
           </h6>
           <h6 className="mt-2 text-sm font-bold text-black dark:text-white">
-            Wind Direction: <span className="text-sm font-medium">NW</span>
+            Wind Direction: <span className="text-sm font-medium">{weather.wind_deg} deg</span>
           </h6>
           <h6 className="mt-2 text-sm font-bold text-black dark:text-white">
-            Visibility: <span className="text-sm font-medium">10 miles</span>
+            Visibility: <span className="text-sm font-medium">{weather.visibility}</span>
           </h6>
         </div>
-
-        <span
-          className={`flex items-center gap-1 text-sm font-medium ${
-            levelUp && "text-meta-3"
-          } ${levelDown && "text-meta-5"} `}
-        >
-          {rate}
-
-          {levelUp && (
-            <svg
-              className="fill-meta-3"
-              width="10"
-              height="11"
-              viewBox="0 0 10 11"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M4.35716 2.47737L0.908974 5.82987L5.0443e-07 4.94612L5 0.0848689L10 4.94612L9.09103 5.82987L5.64284 2.47737L5.64284 10.0849L4.35716 10.0849L4.35716 2.47737Z"
-                fill=""
-              />
-            </svg>
-          )}
-          {levelDown && (
-            <svg
-              className="fill-meta-5"
-              width="10"
-              height="11"
-              viewBox="0 0 10 11"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M5.64284 7.69237L9.09102 4.33987L10 5.22362L5 10.0849L-8.98488e-07 5.22362L0.908973 4.33987L4.35716 7.69237L4.35716 0.0848701L5.64284 0.0848704L5.64284 7.69237Z"
-                fill=""
-              />
-            </svg>
-          )}
-        </span>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import React, { ReactNode } from "react";
+import { useAuth } from "@/utils/auth";
 
 interface CardDataStatsProps {
   title: string;

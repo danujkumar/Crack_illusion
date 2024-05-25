@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
 const options: ApexOptions = {
-  colors: ["#3C50E0", "#80CAEE"],
+  colors: ["#3C50E0", "#06c916", "#80CAEE"],
   chart: {
     fontFamily: "Satoshi, sans-serif",
     type: "bar",
@@ -73,11 +73,15 @@ const ChartTwo: React.FC = () => {
   const [state, setState] = useState<ChartTwoState>({
     series: [
       {
-        name: "Sales",
+        name: "Path 1",
         data: [44, 55, 41, 67, 22, 43, 65],
       },
       {
-        name: "Revenue",
+        name: "Path 2",
+        data: [13, 23, 20, 8, 13, 27, 15],
+      },
+      {
+        name: "Path 3",
         data: [13, 23, 20, 8, 13, 27, 15],
       },
     ],
@@ -95,7 +99,7 @@ const ChartTwo: React.FC = () => {
       <div className="mb-4 justify-between gap-4 sm:flex">
         <div>
           <h4 className="text-xl font-semibold text-black dark:text-white">
-            Profit this week
+            Past Risk Index
           </h4>
         </div>
         <div>
