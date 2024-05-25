@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { createContext, useContext, useState } from "react";
 export const AuthContext = createContext();
 
@@ -12,38 +12,46 @@ export const AuthProvider = ({ children }) => {
   const [health, setHealth] = useState({});
   const [mount, setMount] = useState(false);
   const [metrics, setMetrics] = useState({
-    speed:"0",
-    fuel:"8000",
-    altitude:"0"
+    speed: "0",
+    fuel: "8000",
+    altitude: "0",
   });
-  const [location, setLocation]= useState({
+  const [location, setLocation] = useState({
     lat: "",
-    lng: ""
+    lng: "",
   });
-  const [conditon, setCondition] = useState({});
+  const [condition, setCondition] = useState({
+    temp: "",
+    pressure: "",
+    visibility: "",
+    wind_speed: "",
+    wind_deg: "",
+    type: "",
+    type_code: 0,
+  });
 
-  const situation  = (weather)=>{
+  const situation = (weather) => {
     setCondition(weather);
-  }
+  };
 
   const setting = (dep, arr, health, safe, reliable, efficient, actual) => {
-      setSafe(safe);
-      setReliable(reliable);
-      setEfficient(efficient);
-      setActual(actual);
-      setDep(dep);
-      setArr(arr);
-      setHealth(health);  
+    setSafe(safe);
+    setReliable(reliable);
+    setEfficient(efficient);
+    setActual(actual);
+    setDep(dep);
+    setArr(arr);
+    setHealth(health);
   };
   const locate = (lat, lng) => {
-    setLocation({lat:lat, lng: lng});
-  }
+    setLocation({ lat: lat, lng: lng });
+  };
   const aeroMetrics = (speed, fuel, altitude) => {
-    setMetrics({speed:speed, fuel: fuel, altitude: altitude})
-  }
+    setMetrics({ speed: speed, fuel: fuel, altitude: altitude });
+  };
   const mounting = (mount) => {
     setMount(mount);
-  }
+  };
   return (
     <AuthContext.Provider
       value={{
@@ -54,7 +62,7 @@ export const AuthProvider = ({ children }) => {
         metrics,
         locate,
         situation,
-        conditon,
+        condition,
         location,
         safe,
         reliable,
@@ -62,7 +70,7 @@ export const AuthProvider = ({ children }) => {
         actual,
         departure,
         arrival,
-        health
+        health,
       }}
     >
       {children}

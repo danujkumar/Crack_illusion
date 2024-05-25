@@ -27,6 +27,7 @@ const CardDataStats3: React.FC<CardDataStatsProps> = ({
     wind_speed: "",
     wind_deg: "",
     type: "",
+    type_code:"",
   });
   useEffect(() => {
     axios
@@ -39,6 +40,7 @@ const CardDataStats3: React.FC<CardDataStatsProps> = ({
           wind_speed: res.data.current.wind_speed,
           wind_deg: res.data.current.wind_deg,
           type: res.data.current.weather[0].main,
+          type_code: res.data.current.weather[0].id,
         });
       })
       .catch((err) => {
