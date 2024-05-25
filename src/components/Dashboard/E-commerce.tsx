@@ -108,6 +108,8 @@ const ECommerce: React.FC = () => {
   //   setFlight(new Set([newSelection])); // Update the state with the new selection
   // };
 
+  const [test, settest] = useState("name")
+
   return (
     <>
       <div className="">
@@ -142,7 +144,9 @@ const ECommerce: React.FC = () => {
                   BLR to DEL (08:00)
                 </DropdownItem> */}
                 <DropdownItem key="BOM to DEL (08:00)">
+                  <Button onPress={()=>{settest("ghhj")}} >
                   BOM to DEL (08:00)
+                  </Button>
                 </DropdownItem>
                 {/* <DropdownItem key="DEL to BOM (14:00)">
                   DEL to BOM (14:00)
