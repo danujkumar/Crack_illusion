@@ -115,7 +115,7 @@ const Page = () => {
             }
             aeroMetrics(actual[count].mph,8000-2*count,actual[count].feet);
             locate(poss[0], poss[1]);
-        }, 6000);
+        }, 2000);
     }
     return () => clearInterval(interval);
   }, [mount]);
@@ -174,7 +174,7 @@ const Page = () => {
         <Polyline center={poss} pathOptions={{ color: "yellow" }} positions={polyliner} /></>}
         
 
-        {air.map((item, index) => (
+        {mount && air.map((item, index) => (
           // console.log(item)
           <Marker key={index} position={[item.latitude, item.longitude]} icon={customIcon}>
             <Popup>You are herjhjkhjkhkhkhkhke</Popup>
