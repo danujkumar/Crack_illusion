@@ -1,4 +1,5 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
+import { useAuth } from "@/utils/auth";
 
 interface CardDataStatsProps {
   title: string;
@@ -17,6 +18,75 @@ const CardDataStats2: React.FC<CardDataStatsProps> = ({
   levelDown,
   children,
 }) => {
+  const { condition } = useAuth();
+  // console.log(condition);
+  //Risk calculation here
+  //weightage
+  const weightage = {
+    temp: 0.05,
+    visibility: 0.3,
+    type: 0.05,
+    wind_speed: 0.2,
+    precipitation: 0.25,
+    altitude: 0.05,
+  };
+
+  const [riskk, setRiskk] = useState(0.0);
+
+  useEffect(() => {
+    //Calculation of seperate
+    let sky_condition = 0;
+    if (
+      Number.parseInt(condition.type_code) >= 200 &&
+      Number.parseInt(condition.type_code) <= 232
+    ) {
+      sky_condition = 3;
+    } else if (
+      Number.parseInt(condition.type_code) >= 300 &&
+      Number.parseInt(condition.type_code) <= 321
+    ) {
+      sky_condition = 3;
+    } else if (
+      Number.parseInt(condition.type_code) >= 500 &&
+      Number.parseInt(condition.type_code) <= 531
+    ) {
+      sky_condition = 3;
+    } else if (
+      Number.parseInt(condition.type_code) >= 600 &&
+      Number.parseInt(condition.type_code) <= 622
+    ) {
+      sky_condition = 3;
+    } else if (
+      Number.parseInt(condition.type_code) >= 701 &&
+      Number.parseInt(condition.type_code) <= 781
+    ) {
+      sky_condition = 3;
+    } else if (Number.parseInt(condition.type_code) == 800) {
+      sky_condition = 0;
+    } else if (Number.parseInt(condition.tyep_code) > 800) {
+      sky_condition = 2;
+    }
+
+    const final_value = {
+      ftemp: weightage.temp * (Number.parseFloat(condition.temp) - 273.15),
+      fvisibility:
+        weightage.visibility *
+        (Number.parseFloat(condition.visibility) * 0.621371),
+      fwind_speed:
+        weightage.wind_speed *
+        (Number.parseFloat(condition.wind_speed) * 1.94384),
+      ftype: weightage.type * sky_condition,
+    };
+    let risk_score =
+      weightage.temp * final_value.ftemp +
+      weightage.visibility * final_value.fvisibility +
+      weightage.type * final_value.ftype +
+      weightage.wind_speed * final_value.fwind_speed;
+    
+    setRiskk(risk_score);
+    console.log(risk_score);
+  }, [condition]);
+
   return (
     <div className="rounded-sm border border-stroke bg-white px-4 py-2 shadow-default dark:border-strokedark dark:bg-boxdark">
       {/* <div className="flex h-11.5 w-11.5 items-center justify-center rounded-full bg-meta-2 dark:bg-meta-4">
@@ -29,59 +99,14 @@ const CardDataStats2: React.FC<CardDataStatsProps> = ({
           Risk and Alerts
         </h6>
         <div className="mt-4 flex-row justify-between">
-          <h6 className="text-sm mt-2 font-bold text-black dark:text-white">
+          <h6 className="mt-2 text-sm font-bold text-black dark:text-white">
             Current Risk Level:{" "}
             <span className="text-sm font-medium">
               {/* {title} */}
-              Medium
-            </span>
-          </h6>
-          <h6 className="text-sm font-bold mt-2 text-black dark:text-white">
-          Alerts:{" "}
-            <span className="text-sm font-medium">
-            Moderate turbulence expected over Colorado
+              {riskk/100}
             </span>
           </h6>
         </div>
-
-        <span
-          className={`flex items-center gap-1 text-sm font-medium ${
-            levelUp && "text-meta-3"
-          } ${levelDown && "text-meta-5"} `}
-        >
-          {rate}
-
-          {levelUp && (
-            <svg
-              className="fill-meta-3"
-              width="10"
-              height="11"
-              viewBox="0 0 10 11"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M4.35716 2.47737L0.908974 5.82987L5.0443e-07 4.94612L5 0.0848689L10 4.94612L9.09103 5.82987L5.64284 2.47737L5.64284 10.0849L4.35716 10.0849L4.35716 2.47737Z"
-                fill=""
-              />
-            </svg>
-          )}
-          {levelDown && (
-            <svg
-              className="fill-meta-5"
-              width="10"
-              height="11"
-              viewBox="0 0 10 11"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M5.64284 7.69237L9.09102 4.33987L10 5.22362L5 10.0849L-8.98488e-07 5.22362L0.908973 4.33987L4.35716 7.69237L4.35716 0.0848701L5.64284 0.0848704L5.64284 7.69237Z"
-                fill=""
-              />
-            </svg>
-          )}
-        </span>
       </div>
     </div>
   );

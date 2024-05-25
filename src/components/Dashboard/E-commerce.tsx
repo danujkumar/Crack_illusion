@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ChartOne from "../Charts/ChartOne";
 import ChartThree from "../Charts/ChartThree";
 import ChartTwo from "../Charts/ChartTwo";
@@ -13,8 +13,6 @@ import CardDataStats5 from "../CardDataStats5";
 import Link from "next/link";
 // import MapOne from "../Maps/MapOne";
 import Page from "../osm/page";
-import DropdownMessage from "../Header/DropdownMessage";
-import DropdownUser from "../Header/DropdownUser";
 import {
   Dropdown,
   DropdownTrigger,
@@ -23,15 +21,87 @@ import {
   Button,
 } from "@nextui-org/react";
 import DropdownDefault from "../Dropdowns/DropdownDefault";
+import axios from "axios";
+import { useAuth } from "@/utils/auth";
 
 const ECommerce: React.FC = () => {
-  const [selectedKeys, setSelectedKeys] = React.useState(new Set(["Flight"]));
-
-  const selectedValue = React.useMemo(
-    () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
-    [selectedKeys],
+  const [flight, setFlight] = React.useState(new Set(["Flight"]));
+  const [path, setPath] = React.useState(new Set(["Path"]));
+  const selectedFlight = React.useMemo(
+    () => Array.from(flight).join(", ").replaceAll("_", ""),
+    [flight],
   );
-  console.log(selectedValue);
+
+  const selectedPath = React.useMemo(
+    () => Array.from(path).join(", ").replaceAll("_", " "),
+    [path],
+  );
+
+  const {setting, mounting, mount} = useAuth();
+
+  useEffect(() => {
+    let url = "";
+    let dep = "";
+    let arr = "";
+    if (selectedFlight == "AGX to DMU (08:00)") {
+      url = "http://localhost:3001/api/routes_morning";
+      dep = "agx";
+      arr = "dmu";
+    } else if (selectedFlight == "BLR to DEL (08:00)") {
+      url = "http://localhost:3001/api/routes_morning";
+      dep = "blr";
+      arr = "del";
+    } else if (selectedFlight == "BOM to DEL (08:00)") {
+      url = "http://localhost:3001/api/routes_morning";
+      dep = "bom";
+      arr = "del";
+    } else if (selectedFlight == "DEL to BOM (14:00)") {
+      url = "http://localhost:3001/api/routes_afternoon";
+      dep = "del";
+      arr = "bom";
+    } else if (selectedFlight == "DMU to AGX (14:00)") {
+      url = "http://localhost:3001/api/routes_afternoon";
+      dep = "dmu";
+      arr = "agx";
+    } else if (selectedFlight == "CCU to AMD (20:00)") {
+      url = "http://localhost:3001/api/routes_evening";
+      dep = "ccu";
+      arr = "amd";
+    } else if (selectedFlight == "CCU to DEL (20:00)") {
+      url = "http://localhost:3001/api/routes_evening";
+      dep = "ccu";
+      arr = "del";
+    }
+
+    let arrr: React.SetStateAction<{}>,
+      depp: React.SetStateAction<{}>,
+      healthh: React.SetStateAction<{}>,
+      safee: React.SetStateAction<never[]>,
+      reliablee: React.SetStateAction<never[]>,
+      efficientt: React.SetStateAction<never[]>,
+      actuall: React.SetStateAction<never[]>;
+
+    axios
+      .post(url, {
+        dep_iato: dep,
+        arr_iato: arr,
+      })
+      .then((res) => {
+        arrr = res.data.arrival;
+        depp = res.data.departure;
+        healthh = res.data.flight_health;
+        safee = res.data.routes.safe.follow;
+        reliablee = res.data.routes.reliable.follow;
+        efficientt = res.data.routes.efficient.follow;
+        actuall = res.data.routes.actual.follow;
+        setting(depp, arrr, healthh, safee, reliablee, efficientt, actuall);
+      })
+      .catch((err) => {
+        console.log("Frontend error: ", err);
+      }).finally(()=>{
+        mounting(false);
+      })
+  }, [flight]);
 
   return (
     <>
@@ -47,7 +117,7 @@ const ECommerce: React.FC = () => {
                   variant="bordered"
                   className="text-grey-300 w-[100%] text-xl font-normal capitalize "
                 >
-                  {selectedValue}
+                  {selectedFlight}
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
@@ -55,17 +125,32 @@ const ECommerce: React.FC = () => {
                 variant="flat"
                 disallowEmptySelection
                 selectionMode="single"
-                selectedKeys={selectedKeys}
-                onSelectionChange={(e) => {
-                  setSelectedKeys(e);
-                }}
+                selectedKeys={flight}
+                onSelectionChange={setFlight}
                 // className="font-bold w-[100%]"
                 style={{ width: 300 }}
               >
-                <DropdownItem key="number">Number</DropdownItem>
-                <DropdownItem key="date">Date</DropdownItem>
-                <DropdownItem key="single_date">Single Date</DropdownItem>
-                <DropdownItem key="iteration">Iteration</DropdownItem>
+                {/* <DropdownItem key="AGX to DMU (08:00)">
+                  AGX to DMU (08:00)
+                </DropdownItem>
+                <DropdownItem key="BLR to DEL (08:00)">
+                  BLR to DEL (08:00)
+                </DropdownItem> */}
+                <DropdownItem key="BOM to DEL (08:00)">
+                  BOM to DEL (08:00)
+                </DropdownItem>
+                {/* <DropdownItem key="DEL to BOM (14:00)">
+                  DEL to BOM (14:00)
+                </DropdownItem>
+                <DropdownItem key="DMU to AGX (14:00)">
+                  DMU to AGX (14:00)
+                </DropdownItem>
+                <DropdownItem key="CCU to AMD (20:00)">
+                  CCU to AMD (20:00)
+                </DropdownItem>
+                <DropdownItem key="CCU to DEL (20:00)">
+                  CCU to DEL (20:00)
+                </DropdownItem> */}
               </DropdownMenu>
             </Dropdown>
             {/* <DropdownUser /> */}
@@ -76,7 +161,7 @@ const ECommerce: React.FC = () => {
                   variant="bordered"
                   className="text-grey-300 w-[100%] text-xl font-normal capitalize "
                 >
-                  {selectedValue}
+                  {selectedPath}
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
@@ -84,16 +169,14 @@ const ECommerce: React.FC = () => {
                 variant="flat"
                 disallowEmptySelection
                 selectionMode="single"
-                selectedKeys={selectedKeys}
-                onSelectionChange={(e) => {
-                  setSelectedKeys(e);
-                }}
+                selectedKeys={path}
+                onSelectionChange={setPath}
                 // className="font-bold w-[100%]"
                 style={{ width: 300 }}
               >
                 <DropdownItem
                   className="flex gap-4.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-                  key="Aircraft 1234"
+                  key="Safe path"
                 >
                   <div className="flex h-12.5 w-12.5 items-center justify-center rounded-full bg-green-400">
                     <h1 className="text-2xl text-black">1</h1>
@@ -104,7 +187,7 @@ const ECommerce: React.FC = () => {
                     </h6>
                   </div>
                 </DropdownItem>
-                <DropdownItem key="number">
+                <DropdownItem key="Efficient path">
                   <div className="flex h-12.5 w-12.5 items-center justify-center rounded-full bg-red">
                     <h1 className="text-2xl text-black">2</h1>
                   </div>
@@ -114,7 +197,7 @@ const ECommerce: React.FC = () => {
                     </h6>
                   </div>
                 </DropdownItem>
-                <DropdownItem key="date">
+                <DropdownItem key="Reliable path">
                   <div className="flex h-12.5 w-12.5 items-center justify-center rounded-full bg-yellow-400">
                     <h1 className="text-2xl text-black">3</h1>
                   </div>
