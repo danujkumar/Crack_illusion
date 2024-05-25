@@ -103,6 +103,11 @@ const ECommerce: React.FC = () => {
       })
   }, [flight]);
 
+  // const handleSelectionChange = (event: { target: { value: String; }; }) => {
+  //   const newSelection = event.target.value; 
+  //   setFlight(new Set([newSelection])); // Update the state with the new selection
+  // };
+
   return (
     <>
       <div className="">
@@ -126,7 +131,7 @@ const ECommerce: React.FC = () => {
                 disallowEmptySelection
                 selectionMode="single"
                 selectedKeys={flight}
-                onSelectionChange={setFlight}
+                // onSelectionChange={handleSelectionChange}
                 // className="font-bold w-[100%]"
                 style={{ width: 300 }}
               >
@@ -170,7 +175,7 @@ const ECommerce: React.FC = () => {
                 disallowEmptySelection
                 selectionMode="single"
                 selectedKeys={path}
-                onSelectionChange={setPath}
+                // onSelectionChange={setPath}
                 // className="font-bold w-[100%]"
                 style={{ width: 300 }}
               >
