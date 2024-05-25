@@ -10,6 +10,10 @@ import CardDataStats2 from "../CardDataStats2";
 import CardDataStats3 from "../CardDataStats3";
 import CardDataStats4 from "../CardDataStats4";
 import CardDataStats5 from "../CardDataStats5";
+import bom_del from "../../css/Final_Routes_BOM_DEL_Morning.json";
+import del_hnd from "../../css/Final_Routes_DEL_HND_Morning.json";
+import hyd_ccu from "../../css/Final_Routes_HYD_CCU_Morning.json";
+import jfk_del from "../../css/Final_Routes_JFK_DEL_Morning.json";
 import Link from "next/link";
 // import MapOne from "../Maps/MapOne";
 import Page from "../osm/page";
@@ -37,40 +41,30 @@ const ECommerce: React.FC = () => {
     [path],
   );
 
-  const {setting, mounting, mount} = useAuth();
+  const { setting, mounting, mount } = useAuth();
+
+  const [fst, setfst] = useState("");
 
   useEffect(() => {
     let url = "";
     let dep = "";
     let arr = "";
-    if (selectedFlight == "AGX to DMU (08:00)") {
+    if (fst == "HND to DEL (08:00)") {
       url = "http://localhost:3001/api/routes_morning";
-      dep = "agx";
-      arr = "dmu";
-    } else if (selectedFlight == "BLR to DEL (08:00)") {
+      dep = "del";
+      arr = "hnd";
+    } else if (fst == "JFK to DEL (08:00)") {
       url = "http://localhost:3001/api/routes_morning";
-      dep = "blr";
+      dep = "jfk";
       arr = "del";
-    } else if (selectedFlight == "BOM to DEL (08:00)") {
+    } else if (fst == "BOM to DEL (08:00)") {
       url = "http://localhost:3001/api/routes_morning";
       dep = "bom";
       arr = "del";
-    } else if (selectedFlight == "DEL to BOM (14:00)") {
-      url = "http://localhost:3001/api/routes_afternoon";
-      dep = "del";
-      arr = "bom";
-    } else if (selectedFlight == "DMU to AGX (14:00)") {
-      url = "http://localhost:3001/api/routes_afternoon";
-      dep = "dmu";
-      arr = "agx";
-    } else if (selectedFlight == "CCU to AMD (20:00)") {
-      url = "http://localhost:3001/api/routes_evening";
-      dep = "ccu";
-      arr = "amd";
-    } else if (selectedFlight == "CCU to DEL (20:00)") {
-      url = "http://localhost:3001/api/routes_evening";
-      dep = "ccu";
-      arr = "del";
+    } else if (fst == "HYD to CCU (08:00)") {
+      url = "http://localhost:3001/api/routes_morning";
+      dep = "hyd";
+      arr = "ccu";
     }
 
     let arrr: React.SetStateAction<{}>,
@@ -98,15 +92,24 @@ const ECommerce: React.FC = () => {
       })
       .catch((err) => {
         console.log("Frontend error: ", err);
-      }).finally(()=>{
-        mounting(false);
       })
-  }, [flight]);
+      .finally(() => {
+        mounting(false);
+      });
+  }, [fst]);
 
-  // const handleSelectionChange = (event: { target: { value: String; }; }) => {
-  //   const newSelection = event.target.value; 
-  //   setFlight(new Set([newSelection])); // Update the state with the new selection
-  // };
+  const route_select = () => {
+      console.log("Running");
+      setting(
+        del_hnd.departure,
+        del_hnd.arrival,
+        del_hnd.flight_health,
+        del_hnd.routes.safe.follow,
+        del_hnd.routes.reliable.follow,
+        del_hnd.routes.efficient.follow,
+        del_hnd.routes.actual.follow,
+      );
+  };
 
   return (
     <>
@@ -131,7 +134,7 @@ const ECommerce: React.FC = () => {
                 disallowEmptySelection
                 selectionMode="single"
                 selectedKeys={flight}
-                // onSelectionChange={handleSelectionChange}
+                // onSelectionChange={setFlight}
                 // className="font-bold w-[100%]"
                 style={{ width: 300 }}
               >
@@ -142,7 +145,24 @@ const ECommerce: React.FC = () => {
                   BLR to DEL (08:00)
                 </DropdownItem> */}
                 <DropdownItem key="BOM to DEL (08:00)">
-                  BOM to DEL (08:00)
+                  <Button onPress={() => setfst("BOM to DEL (08:00)")}>
+                    BOM to DEL (08:00)
+                  </Button>
+                </DropdownItem>
+                <DropdownItem key="HND to DEL (08:00)">
+                  <Button onPress={() => {route_select(); console.log("Is running...")}}>
+                    HND to DEL (08:00)
+                  </Button>
+                </DropdownItem>
+                <DropdownItem key="JFK to DEL (08:00)">
+                  <Button onPress={() => setfst("JFK to DEL (08:00)")}>
+                    JFK to DEL (08:00)
+                  </Button>
+                </DropdownItem>
+                <DropdownItem key="HYD to CCU (08:00)">
+                  <Button onPress={() => setfst("HYD to CCU (08:00)")}>
+                    HYD to CCU (08:00)
+                  </Button>
                 </DropdownItem>
                 {/* <DropdownItem key="DEL to BOM (14:00)">
                   DEL to BOM (14:00)
