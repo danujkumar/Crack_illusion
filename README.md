@@ -7,6 +7,10 @@ Aerothon 6.0 Team Project on 25/05/24
 
 - Overview: We have developed a Next.js web application dashboard for pilots and technical heads, allowing them to visualize and respond to our backend algorithm for optimal route planning. We use the Leaflet framework for map visualization and have implemented our REST APIs on a Node server.
 
+## Documentation
+
+[Documentation Google Drive for PPT and Algorithm doc](https://drive.google.com/drive/folders/1YYiEG_gPXsqS6dFYO92XLRIDDMB4PGME?usp=drive_link)
+
 ## Tech Stack
 
 **Client:** NextJs, TailwindCSS, NextUI
@@ -72,7 +76,5 @@ Start the server
 - Kaggle: for data reasearch
 
 
-## Documentation
 
-[Documentation google drive](https://drive.google.com/drive/folders/1YYiEG_gPXsqS6dFYO92XLRIDDMB4PGME?usp=drive_link)
 
