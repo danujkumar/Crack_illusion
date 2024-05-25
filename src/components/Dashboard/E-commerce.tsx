@@ -111,6 +111,8 @@ const ECommerce: React.FC = () => {
       );
   };
 
+  const [test, settest] = useState("name")
+
   return (
     <>
       <div className="">
