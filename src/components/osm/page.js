@@ -176,7 +176,7 @@ const Page = () => {
 
         {air.map((item, key) => (
           // console.log(item)
-          <Marker position={[item.latitude, item.longitude]} icon={customIcon}>
+          <Marker key={"1234"} position={[item.latitude, item.longitude]} icon={customIcon}>
             <Popup>You are herjhjkhjkhkhkhkhke</Popup>
           </Marker>
         ))}
