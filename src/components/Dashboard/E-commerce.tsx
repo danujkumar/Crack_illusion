@@ -98,17 +98,49 @@ const ECommerce: React.FC = () => {
       });
   }, [fst]);
 
-  const route_select = () => {
-      console.log("Running");
-      setting(
-        del_hnd.departure,
-        del_hnd.arrival,
-        del_hnd.flight_health,
-        del_hnd.routes.safe.follow,
-        del_hnd.routes.reliable.follow,
-        del_hnd.routes.efficient.follow,
-        del_hnd.routes.actual.follow,
-      );
+  const route_select = (route: string | undefined) => {
+      if (route == "HND to DEL (08:00)") {
+        setting(
+          del_hnd.departure,
+          del_hnd.arrival,
+          del_hnd.flight_health,
+          del_hnd.routes.safe.follow,
+          del_hnd.routes.reliable.follow,
+          del_hnd.routes.efficient.follow,
+          del_hnd.routes.actual.follow,
+        );
+      } else if (route == "JFK to DEL (08:00)") {
+        setting(
+          jfk_del.departure,
+          jfk_del.arrival,
+          jfk_del.flight_health,
+          jfk_del.routes.safe.follow,
+          jfk_del.routes.reliable.follow,
+          jfk_del.routes.efficient.follow,
+          jfk_del.routes.actual.follow,
+        );
+      } else if (route == "BOM to DEL (08:00)") {
+        setting(
+          bom_del.departure,
+          bom_del.arrival,
+          bom_del.flight_health,
+          bom_del.routes.safe.follow,
+          bom_del.routes.reliable.follow,
+          bom_del.routes.efficient.follow,
+          bom_del.routes.actual.follow,
+        );
+      } else if (route == "HYD to CCU (08:00)") {
+        setting(
+          hyd_ccu.departure,
+          hyd_ccu.arrival,
+          hyd_ccu.flight_health,
+          hyd_ccu.routes.safe.follow,
+          hyd_ccu.routes.reliable.follow,
+          hyd_ccu.routes.efficient.follow,
+          hyd_ccu.routes.actual.follow,
+        );
+        mounting(false);
+      }
   };
 
   const [test, settest] = useState("name")
@@ -147,22 +179,22 @@ const ECommerce: React.FC = () => {
                   BLR to DEL (08:00)
                 </DropdownItem> */}
                 <DropdownItem key="BOM to DEL (08:00)">
-                  <Button onPress={() => setfst("BOM to DEL (08:00)")}>
+                  <Button onPress={() => route_select("BOM to DEL (08:00)")}>
                     BOM to DEL (08:00)
                   </Button>
                 </DropdownItem>
                 <DropdownItem key="HND to DEL (08:00)">
-                  <Button onPress={() => {route_select(); console.log("Is running...")}}>
+                  <Button onPress={() => {route_select("HND to DEL (08:00)");}}>
                     HND to DEL (08:00)
                   </Button>
                 </DropdownItem>
                 <DropdownItem key="JFK to DEL (08:00)">
-                  <Button onPress={() => setfst("JFK to DEL (08:00)")}>
+                  <Button onPress={() => route_select("JFK to DEL (08:00)")}>
                     JFK to DEL (08:00)
                   </Button>
                 </DropdownItem>
                 <DropdownItem key="HYD to CCU (08:00)">
-                  <Button onPress={() => setfst("HYD to CCU (08:00)")}>
+                  <Button onPress={() => route_select("HYD to CCU (08:00)")}>
                     HYD to CCU (08:00)
                   </Button>
                 </DropdownItem>
