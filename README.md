@@ -11,6 +11,8 @@ Aerothon 6.0 Team Project on 25/05/24
 
 [Documentation Google Drive for PPT and Algorithm doc](https://drive.google.com/drive/folders/1YYiEG_gPXsqS6dFYO92XLRIDDMB4PGME?usp=drive_link)
 
+[Backend Code Link: ](https://github.com/danujkumar/aerothon_backend)
+
 ## Tech Stack
 
 **Client:** NextJs, TailwindCSS, NextUI
