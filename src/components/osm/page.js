@@ -174,9 +174,9 @@ const Page = () => {
         <Polyline center={poss} pathOptions={{ color: "yellow" }} positions={polyliner} /></>}
         
 
-        {air.map((item, key) => (
+        {air.map((item, index) => (
           // console.log(item)
-          <Marker key={"1234"} position={[item.latitude, item.longitude]} icon={customIcon}>
+          <Marker key={index} position={[item.latitude, item.longitude]} icon={customIcon}>
             <Popup>You are herjhjkhjkhkhkhkhke</Popup>
           </Marker>
         ))}
